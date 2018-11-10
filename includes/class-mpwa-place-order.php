@@ -8,7 +8,6 @@
  */
 
 use MailPoet\Models\Subscriber;
-use MailPoet\Subscribers\ConfirmationEmailMailer;
 
 if(!class_exists('MPWA_Place_Order')){
 	class MPWA_Place_Order
@@ -86,9 +85,7 @@ if(!class_exists('MPWA_Place_Order')){
 						);
 						
 						// Send signup confirmation email
-						// REMOVED $confirm_email = $subscriber->sendConfirmationEmail();
-						$sender = new ConfirmationEmailMailer();
-      			$sender->sendConfirmationEmail($subscriber);
+								$confirm_email = $subscriber->sendConfirmationEmail();
 
 					//Show error notice if unable to save data
 					}else{
