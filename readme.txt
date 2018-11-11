@@ -98,6 +98,20 @@ That's it, now when your customers tick the subscribe checkbox on the checkout p
 2. Multi checkbox subscribe fields on the checkout page.
 3. General plugin settings.
 
+== Changelog ==
+
+= 2.2.0 - 2018-11-11 =
+
+added missing action and function to load plugin text domain
+
+= 2.1.0 - 2018-11-11 =
+
+removed code that checks for logged in or already subscribed user
+
+= 2.0.0 – 2018-11-11 =
+
+initial release with MailPoet API usage
+
 == Credits ==
 
 This plugin is based on the WooCommerce plugin originally created by @sebd86
