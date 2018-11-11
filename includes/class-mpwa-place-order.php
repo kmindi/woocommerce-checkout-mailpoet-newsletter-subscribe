@@ -2,9 +2,9 @@
 /**
  * Run actions after place order
  * @since      1.0.0
- * @package    Add-on WooCommerce MailPoet 3
- * @subpackage add-on-woocommerce-mailpoet/includes
- * @author     Tikweb <kasper@tikjob.dk>
+ * @package    WooCommerce Checkout MailPoet Newsletter Subscribe
+ * @subpackage woocommerce-checkout-mailpoet-newsletter-subscribe/includes
+ * @author     Kai Mindermann and Tikweb <kasper@tikjob.dk>
  */
 
 use MailPoet\Models\Subscriber;
@@ -67,60 +67,62 @@ if(!class_exists('MPWA_Place_Order')){
 				);
 
 				//Get `Enable Double Opt-in` value
-				$double_optin = get_option('wc_mailpoet_double_optin'); 
+				$double_optin = get_option('wc_mailpoet_double_optin', 'yes'); 
+				if(!$double_optin) {
+					// if option is not set, it will be false
+					$options = array(
+						'send_confirmation_email' => true, 
+					);
+				} else {
+					$options = array(
+						'send_confirmation_email' => $double_optin == 'yes' ? true : false, 
+					);
+				}
 
-				if($double_optin == 'yes'){ //If Double Opt-in enable
-					
-					$subscribe_data['status'] = 'unconfirmed';
-					
-					//Save subcriber data
-					$subscriber = Subscriber::createOrUpdate($subscribe_data);
-					
-					// Display success notice to the customer.
-					if(!empty($subscriber)){
+				// Get subscriber if he/she exists
+				try {
+					$subscriber = MailPoet\API\API::MP('v1')->getSubscriber($subscribe_data['email']); 
+					// if the subscriber exists, subscribe him to the lists
+					try {
+						$subscriber = \MailPoet\API\API::MP('v1')->subscribeToLists($subscriber, $lists, $options);
+					} catch(Exception $exception) {
+						// return $exception->getMessage();
+					}
+
+				} catch(Exception $exception) {
+					//This subscriber does not exist
+
+					// create the subscriber and subscribe to lists
+					try {
+						$subscriber = \MailPoet\API\API::MP('v1')->addSubscriber($subscriber_data, $list_id_array, $options);
+					} catch(Exception $exception) {
+						// return $exception->getMessage();
+					}
+				}
+
+				// Display success notice to the customer.
+				if($subscriber !== false){
+					if($options['send_confirmation_email']) {
 						wc_add_notice( 
 							apply_filters(
 								'mailpoet_woocommerce_subscribe_confirm', 
 								self::__('We have sent you an email to confirm your newsletter subscription. Please confirm your subscription. Thank you.') 
-							)
+							) 
 						);
-						
-						// Send signup confirmation email
-						// REMOVED $confirm_email = $subscriber->sendConfirmationEmail();
-						$sender = new ConfirmationEmailMailer();
-      			$sender->sendConfirmationEmail($subscriber);
-
-					//Show error notice if unable to save data
-					}else{
-						self::subscribe_error_notice();
-					}//End of if $subscriber !== false
-
-				}else{ //If Double Opt-in disable
-
-					$subscribe_data['status'] = 'subscribed';
-					
-					//Save subcriber data
-					$subscriber = Subscriber::createOrUpdate($subscribe_data);
-
-					// Display success notice to the customer.
-					if($subscriber !== false){
+					} else {
 						wc_add_notice( 
 							apply_filters(
 								'mailpoet_woocommerce_subscribe_thank_you', 
 								self::__('Thank you for subscribing to our newsletters.') 
 							) 
 						);
-
-					//Show error notice if unable to save data
-					}else{
-						self::subscribe_error_notice();
-					
-					}//End of if $subscriber !== false
+					}
+				//Show error notice if unable to save data
+				}else{
+					self::subscribe_error_notice();
 				
-				}//End of if $double_optin == 'yes'
-			
-			}//End of if is_array($list_id_array)
-		
+				}//End of if $subscriber !== false
+			}
 		}//End of save_subscriber_record
 
 		/**
@@ -130,12 +132,19 @@ if(!class_exists('MPWA_Place_Order')){
 		{
 
 			$email = isset($posted_data['billing_email']) ? $posted_data['billing_email'] : false;
-			$subscriber = Subscriber::findOne( $email );
+			
+			try {
+				$subscriber = MailPoet\API\API::MP('v1')->getSubscriber($email); // $identifier can be either a subscriber ID or e-mail
+			} catch(Exception $exception) {
+				// return $exception->getMessage();
+			}
 
 			if ( $subscriber !== false ){
-
-				$subscriber->status = 'unsubscribed';
-				$subscriber->save();
+				try {
+					$subscriber = MailPoet\API\API::MP('v1')->unsubscribeFromLists($subscriber, \MailPoet\API\API::MP('v1')->getLists()); 
+				} catch(Exception $exception) {
+					// return $exception->getMessage();
+				}
 
 				wc_add_notice( 
 					apply_filters(

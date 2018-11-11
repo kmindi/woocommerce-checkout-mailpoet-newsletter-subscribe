@@ -2,9 +2,9 @@
 /**
  * Checkout page field
  * @since      1.0.0
- * @package    Add-on WooCommerce MailPoet 3
- * @subpackage add-on-woocommerce-mailpoet/includes
- * @author     Tikweb <kasper@tikjob.dk>
+ * @package    WooCommerce Checkout MailPoet Newsletter Subscribe
+ * @subpackage woocommerce-checkout-mailpoet-newsletter-subscribe/includes
+ * @author     Kai Mindermann and Tikweb <kasper@tikjob.dk>
  */
 
 use MailPoet\Models\Segment;
@@ -119,13 +119,19 @@ if(!class_exists('MPWA_Frontend_Fields')){
 				<?php if(('yes' == $this->multi_subscription) && !empty($this->list_ids)): ?>
 					<h3><?php $this->_e('Subscribe to Newsletters'); ?></h3>
 					<?php
-						$sagments = Segment::whereIdIn($this->list_ids)->findArray();
-						if(is_array($sagments)): foreach($sagments as $sagment):
+						$lists = MailPoet\API\API::MP('v1')->getLists();
+						// filter out not configured lists
+						foreach ($lists as $key=>$list){
+							if (!in_array($list_ids, $list['id'])){
+									unset($lists[$key]);
+							}
+						}	
+						if(is_array($lists)): foreach($lists as $list):
 					?>
-					<p class="form-row form-row-wide mailpoet-subscription-field" id="mailpoet-list-<?php echo $sagment['id']; ?>">
+					<p class="form-row form-row-wide mailpoet-subscription-field" id="mailpoet-list-<?php echo $list['id']; ?>">
 						<label>
-							<input class="input-checkbox" name="mailpoet_multi_subscription[]" value="<?php echo $sagment['id']; ?>" type="checkbox" <?php checked($this->default_status, 'checked'); ?> > 
-							<?php echo $sagment['name']; ?>
+							<input class="input-checkbox" name="mailpoet_multi_subscription[]" value="<?php echo $list['id']; ?>" type="checkbox" <?php checked($this->default_status, 'checked'); ?> > 
+							<?php echo $list['name']; ?>
 						</label>
 					</p>
 

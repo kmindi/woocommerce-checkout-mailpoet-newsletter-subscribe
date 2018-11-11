@@ -2,9 +2,9 @@
 /**
  * Plugin admin settings class.
  * @since      1.0.0
- * @package    Add-on WooCommerce MailPoet 3
- * @subpackage add-on-woocommerce-mailpoet/includes
- * @author     Tikweb <kasper@tikjob.dk>
+ * @package    WooCommerce Checkout MailPoet Newsletter Subscribe
+ * @subpackage woocommerce-checkout-mailpoet-newsletter-subscribe/includes
+ * @author     Kai Mindermann and Tikweb <kasper@tikjob.dk>
  */
 
 use MailPoet\Models\Segment;
@@ -262,22 +262,22 @@ if(!class_exists('MPWA_Admin_Settings')){
 						$list_ids = get_option('wc_mailpoet_segment_list');
 						if(!is_array($list_ids)) $list_ids = array('');
 
-						$sagments = Segment::where_not_equal('type', Segment::TYPE_WP_USERS)->findArray();
-						if(is_array($sagments)): foreach($sagments as $sagment):
+						$lists = MailPoet\API\API::MP('v1')->getLists();
+						if(is_array($lists)): foreach($lists as $list):
 
-						$has_id = in_array($sagment['id'], $list_ids);
+						$has_id = in_array($list['id'], $list_ids);
 					?>
 					<tr>
 						<td>
 							<input type="checkbox" 
 								name="wc_mailpoet_segment_list[]" 
-								value="<?php echo $sagment['id']; ?>" 
-								id="list-<?php echo $sagment['id']; ?>" 
+								value="<?php echo $list['id']; ?>" 
+								id="list-<?php echo $list['id']; ?>" 
 								<?php checked($has_id, true); ?> 
 							/>
 						</td>
 						<td>
-							<label for="list-<?php echo $sagment['id']; ?>"><?php echo $sagment['name']; ?></label>
+							<label for="list-<?php echo $list['id']; ?>"><?php echo $list['name']; ?></label>
 						</td>
 					</tr>
 					<?php endforeach; endif; ?>
