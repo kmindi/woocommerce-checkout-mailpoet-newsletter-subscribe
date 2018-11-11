@@ -1,7 +1,7 @@
-=== Add-on WooCommerce - MailPoet 3 ===
-Contributors: kasperta, sebd86
+=== WooCommerce Checkout MailPoet Newsletter Subscribe ===
+Contributors: kmindi, kasperta, sebd86
 Tags: mailpoet, wysija, woocommerce, e-commerce, mail, email, e-mail, extension, add-on, newsletter, newsletters, subscription, checkout, list, lists, double opt-in, form
-Donate link: http://www.tikweb.dk/donate/
+Donate link: http://kmindi.de
 Requires at least: 4.6
 Tested up to: 4.9
 Requires PHP: 5.4
@@ -78,28 +78,9 @@ If the online system have not generated a language pack for your language, it is
 3. You have only translated the plugin strings and not the readme. You need above 90% for "Development" and "Development Readme" together, check the percentage of both columns for your language at <https://translate.wordpress.org/projects/wp-plugins/add-on-woocommerce-mailpoet>
 
 
-
 == Installation ==
 
-There are 3 ways to install this plugin:
-
-= 1. The super easy way =
-1. In your WordPress dashboard, navigate to Plugins > Add New
-2. Search for `Add-on WooCommerce MailPoet 3`
-3. Click on "install now" under "Add-on WooCommerce MailPoet 3 "
-4. Activate the plugin
-
-= 2. The easy way =
-1. Download the plugin (.zip file) by using the blue "download" button underneath the plugin banner at the top
-2. In your WordPress dashboard, navigate to Plugins > Add New
-3. Click on "Upload Plugin"
-4. Upload the .zip file
-5. Activate the plugin
-
-= 3. The old-fashioned and reliable way (FTP) =
-1. Download the plugin (.zip file) by using the blue "download" button underneath the plugin banner at the top
-2. Extract the archive and then upload, via FTP, the `woocommerce-add-on-mailpoet-3` folder to the `<WP install folder>/wp-content/plugins/` folder on your host
-3. Activate the plugin
+Use GitHub Updater or download the zip file and upload that to you plugins folder (remove "-master" from the folder)
 
 = Setting up the Plugin =
 
@@ -119,29 +100,11 @@ That's it, now when your customers tick the subscribe checkbox on the checkout p
 
 == Changelog ==
 
-= 1.1.0 – 2018-06-28 =
-* Added a new option for ‘Privacy Policy Notice Page’ that is for the GDPR compliance and ask for allow consent in the subscription form.
 
-* Added a new settings for the 'GDPR'.
+= 2.0.0 – 2018-11-11 =
 
-* Settings for the display GDPR Subscription consent Text.
-
-* Set Privacy Page
-
-* Display Subscribe/Unsubscribe options
-
-* Added changelog.txt file
-
-[Changelog](https://plugins.svn.wordpress.org/add-on-woocommerce-mailpoet/trunk/changelog.txt)
-
-== Upgrade Notice ==
-
-= 1.0.1 =
-* Fixed all the text domain: mailpoet-woocommerce-add-on to add-on-mailpoet-woocommerce
-
-= 1.0.0 =
-* Initial release.
+initial release with MailPoet API usage
 
 == Credits ==
 
-This plugin was based on the WooCommerce plugin originally created by @sebd86
+This plugin is based on the WooCommerce plugin originally created by @sebd86
