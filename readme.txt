@@ -5,7 +5,7 @@ Donate link: http://kmindi.de
 Requires at least: 4.6
 Tested up to: 4.9
 Requires PHP: 5.4
-Stable tag: 2.1.0
+Stable tag: 2.2.0
 
 Let your customers subscribe to your MailPoet 3 newsletter as they checkout from WooCommerce with their purchase.
 

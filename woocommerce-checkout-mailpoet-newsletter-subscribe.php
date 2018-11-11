@@ -3,7 +3,7 @@
  * Plugin Name:       WooCommerce Checkout MailPoet Newsletter Subscribe
  * Description:       Let your customers subscribe to your newsletter as they checkout with their purchase.
  * GitHub Plugin URI: https://github.com/kmindi/woocommerce-checkout-mailpoet-newsletter-subscribe
- * Version:           2.1.0
+ * Version:           2.2.0
  * Author:            Kai Mindermann
  * Author URI:        http://kmindi.de
  * License:           GPL-2.0+
@@ -160,3 +160,15 @@ if(!is_admin()){
 	}
 	add_action('woocommerce_after_checkout_validation', 'wc_after_checkout_validation_mpwa_subscribe', 20, 2);
 }//End if
+
+
+/**
+ * Load plugin textdomain.
+ *
+ * @since 2.2.0
+ */
+function myplugin_load_textdomain() {
+  load_plugin_textdomain( 'add-on-woocommerce-mailpoet', false, basename( dirname( __FILE__ ) ) . '/languages' ); 
+}
+
+add_action( 'init', 'myplugin_load_textdomain' );

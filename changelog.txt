@@ -1,5 +1,9 @@
 == Changelog ==
 
+= 2.2.0 - 2018-11-11 =
+
+added missing action and function to load plugin text domain
+
 = 2.1.0 - 2018-11-11 =
 
 removed code that checks for logged in or already subscribed user
