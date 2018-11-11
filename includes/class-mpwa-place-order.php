@@ -94,7 +94,7 @@ if(!class_exists('MPWA_Place_Order')){
 
 					// create the subscriber and subscribe to lists
 					try {
-						$subscriber = \MailPoet\API\API::MP('v1')->addSubscriber($subscriber_data, $list_id_array, $options);
+						$subscriber = \MailPoet\API\API::MP('v1')->addSubscriber($subscribe_data, $list_id_array, $options);
 					} catch(Exception $exception) {
 						// return $exception->getMessage();
 					}
