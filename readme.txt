@@ -4,8 +4,8 @@ Tags: mailpoet, wysija, woocommerce, e-commerce, mail, email, e-mail, extension,
 Donate link: http://www.tikweb.dk/donate/
 Requires at least: 4.6
 Tested up to: 4.9
-Requires PHP: 5.3
-Stable tag: 1.2.0
+Requires PHP: 5.4
+Stable tag: 2.0.0
 
 Let your customers subscribe to your MailPoet 3 newsletter as they checkout from WooCommerce with their purchase.
 
