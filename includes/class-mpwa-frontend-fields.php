@@ -2,13 +2,10 @@
 /**
  * Checkout page field
  * @since      1.0.0
- * @package    Add-on WooCommerce MailPoet 3
- * @subpackage add-on-woocommerce-mailpoet/includes
- * @author     Tikweb <kasper@tikjob.dk>
+ * @package    WooCommerce Checkout MailPoet Newsletter Subscribe
+ * @subpackage woocommerce-checkout-mailpoet-newsletter-subscribe/includes
+ * @author     Kai Mindermann and Tikweb <kasper@tikjob.dk>
  */
-
-use MailPoet\Models\Segment;
-use MailPoet\Models\Subscriber;
 
 if(!class_exists('MPWA_Frontend_Fields')){
 	class MPWA_Frontend_Fields
@@ -40,14 +37,21 @@ if(!class_exists('MPWA_Frontend_Fields')){
 		private function __construct()
 		{
 			//Check for if user logged in and already subscribed
+			// TODO SHOULD USE API, but currently no way to check if the subscriber is still subscribed..
 			if(is_user_logged_in()){
 
 				$current_user = wp_get_current_user();
-				$user_subscriber = Subscriber::whereEqual('email', $current_user->user_email)->whereEqual('status', 'subscribed')->findArray();
 				
-				//If logged in user is not mailpoet subscriber
-				if(empty($user_subscriber)){
+				try {
+					$user_subscriber = MailPoet\API\API::MP('v1')->getSubscriber($current_user->user_email); 
+					// CHECK HERE IF SUBSCRIBER IS SUBSCRIBED
+					if(!empty($user_subscriber) && is_array($user_subscriber) && !$user_subscriber['status'] == 'subscribed') {
+						$this->run_actions();
+					}
+				} catch(Exception $exception) {
+					// if something with the check went wrong, fall back to show the actions
 					$this->run_actions();
+					error_log($exception->getMessage().PHP_EOL, 3, plugin_dir_path(__FILE__).'debug.log');
 				}
 			}else{
 				$this->run_actions();
@@ -119,13 +123,20 @@ if(!class_exists('MPWA_Frontend_Fields')){
 				<?php if(('yes' == $this->multi_subscription) && !empty($this->list_ids)): ?>
 					<h3><?php $this->_e('Subscribe to Newsletters'); ?></h3>
 					<?php
-						$sagments = Segment::whereIdIn($this->list_ids)->findArray();
-						if(is_array($sagments)): foreach($sagments as $sagment):
+						$lists = MailPoet\API\API::MP('v1')->getLists();
+						// filter out not configured lists
+						foreach ($lists as $key=>$list){
+							
+							if (!in_array($list['id'], $this->list_ids)){
+									unset($lists[$key]);
+							}
+						}	
+						if(is_array($lists)): foreach($lists as $list):
 					?>
-					<p class="form-row form-row-wide mailpoet-subscription-field" id="mailpoet-list-<?php echo $sagment['id']; ?>">
+					<p class="form-row form-row-wide mailpoet-subscription-field" id="mailpoet-list-<?php echo $list['id']; ?>">
 						<label>
-							<input class="input-checkbox" name="mailpoet_multi_subscription[]" value="<?php echo $sagment['id']; ?>" type="checkbox" <?php checked($this->default_status, 'checked'); ?> > 
-							<?php echo $sagment['name']; ?>
+							<input class="input-checkbox" name="mailpoet_multi_subscription[]" value="<?php echo $list['id']; ?>" type="checkbox" <?php checked($this->default_status, 'checked'); ?> > 
+							<?php echo $list['name']; ?>
 						</label>
 					</p>
 

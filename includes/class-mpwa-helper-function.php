@@ -2,9 +2,9 @@
 /**
  * Plugin helper functions.
  * @since      1.0.0
- * @package    Add-on WooCommerce MailPoet 3
- * @subpackage add-on-woocommerce-mailpoet/includes
- * @author     Tikweb <kasper@tikjob.dk>
+ * @package    WooCommerce Checkout MailPoet Newsletter Subscribe
+ * @subpackage woocommerce-checkout-mailpoet-newsletter-subscribe/includes
+ * @author     Kai Mindermann and Tikweb <kasper@tikjob.dk>
  */
 trait MPWA_Helper_Function
 {

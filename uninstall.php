@@ -2,7 +2,7 @@
 /**
  * Fired when the plugin is uninstalled.
  * @since      1.0.0
- * @package    Plugin_Name
+ * @package    WooCommerce Checkout MailPoet Newsletter Subscribe
  */
 
 // If uninstall not called from WordPress, then exit.

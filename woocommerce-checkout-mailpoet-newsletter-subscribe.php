@@ -1,10 +1,9 @@
 <?php
 /**
- * Plugin Name:       Add-on WooCommerce MailPoet 3
+ * Plugin Name:       WooCommerce Checkout MailPoet Newsletter Subscribe
  * Description:       Let your customers subscribe to your newsletter as they checkout with their purchase.
- * GitHub Plugin URI: kmindi/woocommerce-checkout-mailpoet-newsletter-subscribe
  * GitHub Plugin URI: https://github.com/kmindi/woocommerce-checkout-mailpoet-newsletter-subscribe
- * Version:           1.2.0
+ * Version:           2.0.0
  * Author:            Kai Mindermann and Tikweb
  * Author URI:        http://kmindi.de and http://www.tikweb.dk/
  * License:           GPL-2.0+
@@ -16,18 +15,18 @@
  */
 
 /*
-Add-on WooCommerce MailPoet 3  is free software: you can redistribute it and/or modify
+WooCommerce Checkout MailPoet Newsletter Subscribe is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 2 of the License, or
 any later version.
 
-Add-on WooCommerce MailPoet 3  is distributed in the hope that it will be useful,
+WooCommerce Checkout MailPoet Newsletter Subscribe is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with Add-on WooCommerce MailPoet 3 . If not, see http://www.gnu.org/licenses/gpl-2.0.txt.
+along with WooCommerce Checkout MailPoet Newsletter Subscribe. If not, see http://www.gnu.org/licenses/gpl-2.0.txt.
 */
 
 // If this file is called directly, abort.
@@ -63,7 +62,7 @@ if(version_compare(phpversion(), '5.4', '<')){
 	function mailpoet_cfi_php_version_notice(){
 		?>
 		<div class="error">
-			<p><?php _e('Add-on WooCommerce MailPoet 3  plugin requires PHP version 5.4 or newer, Please upgrade your PHP.', 'add-on-woocommerce-mailpoet'); ?></p>
+			<p><?php _e('WooCommerce Checkout MailPoet Newsletter Subscribe plugin requires PHP version 5.4 or newer, Please upgrade your PHP.', 'add-on-woocommerce-mailpoet'); ?></p>
 		</div>
 		<?php
 	}
@@ -86,7 +85,7 @@ if(!is_plugin_active('mailpoet/mailpoet.php')){
 		<div class="error">
 			<p>
 			<?php
-				$name = 'Add-on WooCommerce MailPoet 3';
+				$name = 'WooCommerce Checkout MailPoet Newsletter Subscribe';
 				$mp_link = '<a href="https://wordpress.org/plugins/mailpoet/" target="_blank">MailPoet</a>';
 				printf(
 					__('%s plugin requires %s plugin, Please activate %s first to using %s.', 'add-on-woocommerce-mailpoet'),
@@ -114,7 +113,7 @@ if(!is_plugin_active('woocommerce/woocommerce.php')){
 		<div class="error">
 			<p>
 			<?php
-				$name = '<strong>Add-on WooCommerce MailPoet 3 </strong>';
+				$name = '<strong>WooCommerce Checkout MailPoet Newsletter Subscribe</strong>';
 				$cf7_link = '<a href="https://wordpress.org/plugins/woocommerce/" target="_blank">WooCommerce</a>';
 				printf(
 					__('Hold on a minute. You need to install %s first to use %s.', 'add-on-woocommerce-mailpoet'),
