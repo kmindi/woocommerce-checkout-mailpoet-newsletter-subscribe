@@ -45,7 +45,7 @@ if(!class_exists('MPWA_Frontend_Fields')){
 				try {
 					$user_subscriber = MailPoet\API\API::MP('v1')->getSubscriber($current_user->user_email); 
 					// CHECK HERE IF SUBSCRIBER IS SUBSCRIBED
-					if(!empty($user_subscriber) && is_array($user_subscriber) && !$user_subscriber['status'] == 'subscribed') {
+					if(empty($user_subscriber) || ( is_array($user_subscriber) && !$user_subscriber['status'] == 'subscribed')) {
 						$this->run_actions();
 					}
 				} catch(Exception $exception) {
