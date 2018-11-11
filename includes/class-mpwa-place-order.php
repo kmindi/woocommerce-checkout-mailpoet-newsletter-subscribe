@@ -141,9 +141,15 @@ if(!class_exists('MPWA_Place_Order')){
 
 			if ( $subscriber !== false ){
 				try {
-					$subscriber = MailPoet\API\API::MP('v1')->unsubscribeFromLists($subscriber, \MailPoet\API\API::MP('v1')->getLists()); 
+					$list_ids = [];
+					// get ids of all avialble lists one could unsubscribe
+					foreach (MailPoet\API\API::MP('v1')->getLists() as $list) {
+						$list_ids[] = $list['id'];
+					}
+					MailPoet\API\API::MP('v1')->unsubscribeFromLists($subscriber['id'], $list_ids); 
 				} catch(Exception $exception) {
-					// return $exception->getMessage();
+					self::subscribe_error_notice($exception->getMessage());
+					return;
 				}
 
 				wc_add_notice( 
