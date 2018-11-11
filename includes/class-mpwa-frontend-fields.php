@@ -36,26 +36,7 @@ if(!class_exists('MPWA_Frontend_Fields')){
 		 */
 		private function __construct()
 		{
-			//Check for if user logged in and already subscribed
-			// TODO SHOULD USE API, but currently no way to check if the subscriber is still subscribed..
-			if(is_user_logged_in()){
-
-				$current_user = wp_get_current_user();
-				
-				try {
-					$user_subscriber = MailPoet\API\API::MP('v1')->getSubscriber($current_user->user_email); 
-					// CHECK HERE IF SUBSCRIBER IS SUBSCRIBED
-					if(empty($user_subscriber) || ( is_array($user_subscriber) && !$user_subscriber['status'] == 'subscribed')) {
-						$this->run_actions();
-					}
-				} catch(Exception $exception) {
-					// if something with the check went wrong, fall back to show the actions
-					$this->run_actions();
-					error_log($exception->getMessage().PHP_EOL, 3, plugin_dir_path(__FILE__).'debug.log');
-				}
-			}else{
-				$this->run_actions();
-			}//End if
+			$this->run_actions();
 		}//End of __construct
 
 		/**
