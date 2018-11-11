@@ -5,7 +5,7 @@ Donate link: http://kmindi.de
 Requires at least: 4.6
 Tested up to: 4.9
 Requires PHP: 5.4
-Stable tag: 2.0.0
+Stable tag: 2.1.0
 
 Let your customers subscribe to your MailPoet 3 newsletter as they checkout from WooCommerce with their purchase.
 
@@ -97,13 +97,6 @@ That's it, now when your customers tick the subscribe checkbox on the checkout p
 1. Single checkbox subscribe field on the checkout page.
 2. Multi checkbox subscribe fields on the checkout page.
 3. General plugin settings.
-
-== Changelog ==
-
-
-= 2.0.0 – 2018-11-11 =
-
-initial release with MailPoet API usage
 
 == Credits ==
 
