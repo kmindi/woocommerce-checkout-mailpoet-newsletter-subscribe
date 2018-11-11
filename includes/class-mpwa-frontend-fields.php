@@ -7,9 +7,6 @@
  * @author     Kai Mindermann and Tikweb <kasper@tikjob.dk>
  */
 
-use MailPoet\Models\Segment;
-use MailPoet\Models\Subscriber;
-
 if(!class_exists('MPWA_Frontend_Fields')){
 	class MPWA_Frontend_Fields
 	{
@@ -40,14 +37,21 @@ if(!class_exists('MPWA_Frontend_Fields')){
 		private function __construct()
 		{
 			//Check for if user logged in and already subscribed
+			// TODO SHOULD USE API, but currently no way to check if the subscriber is still subscribed..
 			if(is_user_logged_in()){
 
 				$current_user = wp_get_current_user();
-				$user_subscriber = Subscriber::whereEqual('email', $current_user->user_email)->whereEqual('status', 'subscribed')->findArray();
 				
-				//If logged in user is not mailpoet subscriber
-				if(empty($user_subscriber)){
+				try {
+					$user_subscriber = MailPoet\API\API::MP('v1')->getSubscriber($current_user->user_email); 
+					// CHECK HERE IF SUBSCRIBER IS SUBSCRIBED
+					if(!empty($user_subscriber) && is_array($user_subscriber) && !$user_subscriber['status'] == 'subscribed') {
+						$this->run_actions();
+					}
+				} catch(Exception $exception) {
+					// if something with the check went wrong, fall back to show the actions
 					$this->run_actions();
+					error_log($exception->getMessage().PHP_EOL, 3, plugin_dir_path(__FILE__).'debug.log');
 				}
 			}else{
 				$this->run_actions();
@@ -122,7 +126,8 @@ if(!class_exists('MPWA_Frontend_Fields')){
 						$lists = MailPoet\API\API::MP('v1')->getLists();
 						// filter out not configured lists
 						foreach ($lists as $key=>$list){
-							if (!in_array($list_ids, $list['id'])){
+							
+							if (!in_array($list['id'], $this->list_ids)){
 									unset($lists[$key]);
 							}
 						}	

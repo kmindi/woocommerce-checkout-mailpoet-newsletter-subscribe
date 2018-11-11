@@ -7,9 +7,6 @@
  * @author     Kai Mindermann and Tikweb <kasper@tikjob.dk>
  */
 
-use MailPoet\Models\Subscriber;
-use MailPoet\Subscribers\ConfirmationEmailMailer;
-
 if(!class_exists('MPWA_Place_Order')){
 	class MPWA_Place_Order
 	{
@@ -62,8 +59,7 @@ if(!class_exists('MPWA_Place_Order')){
 				$subscribe_data = array(
 					'email'     => $posted_data['billing_email'],
 					'first_name' => $posted_data['billing_first_name'],
-					'last_name'  => $posted_data['billing_last_name'],
-					'segments' => $list_id_array
+					'last_name'  => $posted_data['billing_last_name']
 				);
 
 				//Get `Enable Double Opt-in` value
@@ -84,9 +80,11 @@ if(!class_exists('MPWA_Place_Order')){
 					$subscriber = MailPoet\API\API::MP('v1')->getSubscriber($subscribe_data['email']); 
 					// if the subscriber exists, subscribe him to the lists
 					try {
-						$subscriber = \MailPoet\API\API::MP('v1')->subscribeToLists($subscriber, $lists, $options);
+						$subscriber = MailPoet\API\API::MP('v1')->subscribeToLists($subscriber['id'], $list_id_array, $options);
 					} catch(Exception $exception) {
 						// return $exception->getMessage();
+						self::subscribe_error_notice($exception->getMessage());
+						return;
 					}
 
 				} catch(Exception $exception) {
@@ -94,9 +92,11 @@ if(!class_exists('MPWA_Place_Order')){
 
 					// create the subscriber and subscribe to lists
 					try {
-						$subscriber = \MailPoet\API\API::MP('v1')->addSubscriber($subscribe_data, $list_id_array, $options);
+						$subscriber = MailPoet\API\API::MP('v1')->addSubscriber($subscribe_data, $list_id_array, $options);
 					} catch(Exception $exception) {
 						// return $exception->getMessage();
+						self::subscribe_error_notice($exception->getMessage());
+						return;
 					}
 				}
 
@@ -160,12 +160,12 @@ if(!class_exists('MPWA_Place_Order')){
 		/**
 		 * Save data Error notice
 		 */
-		public static function subscribe_error_notice()
+		public static function subscribe_error_notice($error_message ='')
 		{
 			wc_add_notice( 
 				apply_filters( 
 					'mailpoet_woocommerce_subscribe_error', 
-					self::__('There appears to be a problem subscribing you to our newsletters. Please let us know so we can manually add you ourselves. Thank you.') 
+					self::__('There appears to be a problem subscribing you to our newsletters. Please let us know so we can manually add you ourselves. Thank you.').'<br />'.$error_message 
 				), 
 				'error' 
 			);

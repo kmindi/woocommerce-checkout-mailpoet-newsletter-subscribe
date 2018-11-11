@@ -7,8 +7,6 @@
  * @author     Kai Mindermann and Tikweb <kasper@tikjob.dk>
  */
 
-use MailPoet\Models\Segment;
-
 if(!class_exists('MPWA_Admin_Settings')){
 	class MPWA_Admin_Settings extends WC_Settings_Page 
 	{
