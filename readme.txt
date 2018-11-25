@@ -1,3 +1,5 @@
+** CURRENTLY MIGHT NOT WORK IN SOME CASES, I HAD NO TIME TO CHECK IT THOUROHGLY. IT APPEARS TO BE WITH OTHER FIELDS ADDED TO THE CHECKOUT FORM ONLY **
+
 === WooCommerce Checkout MailPoet Newsletter Subscribe ===
 Contributors: kmindi, kasperta, sebd86
 Tags: mailpoet, wysija, woocommerce, e-commerce, mail, email, e-mail, extension, add-on, newsletter, newsletters, subscription, checkout, list, lists, double opt-in, form
